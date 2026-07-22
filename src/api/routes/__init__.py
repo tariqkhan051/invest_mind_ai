@@ -1,5 +1,6 @@
 """API route modules."""
 
+from src.api.routes.assets import router as assets_router
 from src.api.routes.collectors import router as collectors_router
 from src.api.routes.dashboard import router as dashboard_router
 from src.api.routes.health import router as health_router
@@ -14,6 +15,7 @@ from src.api.routes.scheduler import router as scheduler_router
 from src.api.routes.stock import router as stock_router
 
 __all__ = [
+    "assets_router",
     "collectors_router",
     "dashboard_router",
     "health_router",

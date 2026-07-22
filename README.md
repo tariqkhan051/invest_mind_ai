@@ -493,59 +493,60 @@ Current Phase
 
 ✅ Documentation Complete
 
-# Project Status
+✅ Milestone 1–12 — MVP modules implemented
 
-Current Phase
+✅ Local bootstrap — seed assets, sample market data, sample portfolio
 
-✅ Milestone 1 — Project Scaffolding
+Next Phase
 
-✅ Milestone 2 — Database Foundation & Domain Layer
+⏳ Wire live MUFAP / PSX / SBP HTTP providers (optional; local imports work now)
 
-✅ Milestone 3 — Portfolio Engine
+⏳ Milestone 13 — Production Deployment
 
-✅ Milestone 4 — Data Collection Framework (Complete)
+---
 
-✅ Milestone 5 — Mutual Fund Engine (Complete)
+# Getting Started (local analysis)
 
-✅ Milestone 6 — Stock Engine (Complete)
-
-✅ Milestone 7 — Market Intelligence Engine (Complete)
-
-✅ Milestone 8 — AI Decision Engine (Complete)
-
-✅ Milestone 9 — Learning Engine (Basic) (Complete)
-
-✅ Milestone 10 — Scheduler & Tasks (Complete)
-
-✅ Milestone 11 — Reports & Notifications (Complete)
-
-✅ Milestone 12 — Dashboard (React) (Complete)
-
-### Dashboard development
+Run these steps once from the repo root:
 
 ```bash
-# Terminal 1 — API
+# 1) Install runtime + optional Postgres driver
+uv sync
+# or: pip install -e ".[dev]"
+
+# 2) Bootstrap DB, assets, sample market data, portfolio, recommendations
+python -m scripts.bootstrap
+# optional: python -m scripts.bootstrap --skip-news
+# optional: python -m scripts.bootstrap --reset-portfolio
+
+# 3) Start API
 python -m src.main
 
-# Terminal 2 — React dashboard (proxies /api to localhost:8000)
+# 4) Start dashboard (second terminal)
 cd dashboard
 npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` for the dashboard UI.
+Then open:
 
-Next Phase
+- API docs: http://localhost:8000/docs
+- Dashboard: http://localhost:5173
 
-⏳ Milestone 13 — Production Deployment
+Useful endpoints after bootstrap:
+
+- `GET /api/v1/portfolio` — portfolio summary
+- `GET /api/v1/funds` — fund analysis
+- `GET /api/v1/stocks` — stock analysis
+- `GET /api/v1/recommendations` — AI recommendations
+- `POST /api/v1/assets/funds` / `POST /api/v1/assets/stocks` — register more assets
+- `POST /api/v1/collectors/nav` — re-import local NAV file
+
+Local market data lives in `data/imports/` (`source: local` in `config/providers.yaml`).
 
 Future
 
-⏳ Portfolio Engine
-
-⏳ Data Collection
-
-⏳ AI Decision Engine
+⏳ Live provider HTTP adapters
 
 ⏳ WhatsApp Integration
 

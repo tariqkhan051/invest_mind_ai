@@ -50,6 +50,7 @@ postgres = [
 
 [project.scripts]
 invest-mind-ai = "src.main:run"
+invest-mind-bootstrap = "scripts.bootstrap:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

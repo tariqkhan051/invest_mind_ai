@@ -9,6 +9,7 @@ from fastapi import FastAPI
 
 from src.api.middleware import register_exception_handlers, register_middleware
 from src.api.routes import (
+    assets_router,
     collectors_router,
     health_router,
     market_intelligence_router,
@@ -73,6 +74,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     register_exception_handlers(app)
 
     app.include_router(health_router, prefix=app_settings.api_prefix)
+    app.include_router(assets_router, prefix=app_settings.api_prefix)
     app.include_router(portfolio_router, prefix=app_settings.api_prefix)
     app.include_router(mutual_fund_router, prefix=app_settings.api_prefix)
     app.include_router(stock_router, prefix=app_settings.api_prefix)

@@ -5,7 +5,7 @@ environment: development
 debug: true
 
 database:
-  echo: true
+  echo: false
   pool_size: 5
 
 api:

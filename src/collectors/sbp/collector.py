@@ -8,6 +8,7 @@ from typing import Any
 
 from src.collectors.base.collector import BaseCollector
 from src.collectors.base.http_client import CollectorHttpClient
+from src.collectors.base.local_source import load_local_payload, resolve_local_path
 from src.collectors.base.models import MacroIndicatorRecord, ProviderHealth
 from src.collectors.base.validator import validate_macro_record
 from src.config.settings import Settings
@@ -15,7 +16,7 @@ from src.repositories.interfaces.market_data_repository import MarketDataReposit
 
 
 class SbpCollector(BaseCollector):
-    """Collect macroeconomic indicators from SBP."""
+    """Collect macroeconomic indicators from SBP or local imports."""
 
     provider_name = "sbp"
 
@@ -32,7 +33,13 @@ class SbpCollector(BaseCollector):
         self._http_client = http_client or CollectorHttpClient(timeout, retries)
 
     def collect(self) -> Any:
-        """Download macro indicator data from the configured SBP endpoint."""
+        """Download macro indicator data from local imports or SBP."""
+        if self._get_config_value("source", "http") == "local":
+            path = resolve_local_path(
+                self._settings.project_root,
+                self._get_config_value("local_path", "data/imports/sbp_macro.json"),
+            )
+            return load_local_payload(path)
         base_url = self._get_config_value("base_url").rstrip("/")
         macro_path = self._get_config_value("macro_path", "/api/indicators")
         url = f"{base_url}{macro_path}"
@@ -93,6 +100,21 @@ class SbpCollector(BaseCollector):
         return validate_macro_record(record)
 
     def health_check(self) -> ProviderHealth:
+        if self._get_config_value("source", "http") == "local":
+            path = resolve_local_path(
+                self._settings.project_root,
+                self._get_config_value("local_path", "data/imports/sbp_macro.json"),
+            )
+            healthy = path.exists()
+            return ProviderHealth(
+                provider=self.provider_name,
+                healthy=healthy,
+                message=(
+                    f"Local import ready: {path}"
+                    if healthy
+                    else f"Local import missing: {path}"
+                ),
+            )
         base_url = self._get_config_value("base_url").rstrip("/")
         healthy = self._http_client.health_check(base_url)
         return ProviderHealth(

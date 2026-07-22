@@ -37,6 +37,7 @@ from src.scheduler.job_context import (
     build_notification_service,
     build_report_service,
 )
+from src.services.asset_service import AssetService
 from src.services.collector_service import CollectorService
 from src.services.dashboard_service import DashboardService
 from src.services.learning_service import LearningService
@@ -69,6 +70,13 @@ def get_db(
 ) -> Generator[Session]:
     """Provide a database session per request."""
     yield from get_db_session(settings)
+
+
+def get_asset_service(
+    session: Annotated[Session, Depends(get_db)],
+) -> AssetService:
+    """Provide the asset registration service."""
+    return AssetService(asset_repository=SqlAlchemyAssetRepository(session))
 
 
 def get_portfolio_service(
