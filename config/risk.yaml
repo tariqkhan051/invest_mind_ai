@@ -1,0 +1,16 @@
+# Risk configuration — see docs/16_AI_DECISION_ENGINE.md
+
+portfolio:
+  max_single_fund_allocation: 0.40
+  max_single_stock_allocation: 0.15
+  max_sector_allocation: 0.35
+  min_cash_buffer: 0.05
+  max_portfolio_risk_score: 8.0
+
+recommendations:
+  min_expected_benefit_pct: 0.5
+  max_switch_frequency_days: 30
+
+shariah:
+  enforce_compliance: true
+  exclude_conventional_banking: true

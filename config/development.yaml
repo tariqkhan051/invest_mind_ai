@@ -1,0 +1,23 @@
+# Development environment configuration
+# See docs/08_PROJECT_STRUCTURE.md
+
+environment: development
+debug: true
+
+database:
+  echo: true
+  pool_size: 5
+
+api:
+  cors_origins:
+    - "http://localhost:5173"
+    - "http://localhost:3000"
+
+scheduler:
+  enabled: true
+  timezone: "Asia/Karachi"
+
+logging:
+  level: DEBUG
+  rotation: "10 MB"
+  retention: "7 days"

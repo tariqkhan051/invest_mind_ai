@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: invest_mind_ai_db
+    environment:
+      POSTGRES_USER: investmind
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: invest_mind_ai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U investmind -d invest_mind_ai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: invest_mind_ai_api
+    environment:
+      ENVIRONMENT: development
+      DATABASE_URL: postgresql+psycopg://investmind:changeme@db:5432/invest_mind_ai
+      LOG_LEVEL: INFO
+      DEBUG: "true"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data
+      - ../logs:/app/logs
+      - ../reports:/app/reports
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

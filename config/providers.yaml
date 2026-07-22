@@ -1,0 +1,39 @@
+# External data provider configuration — see docs/11_DATA_COLLECTION.md
+
+providers:
+  mufap:
+    enabled: true
+    base_url: "https://www.mufap.com.pk"
+    nav_path: "/api/nav/daily"
+    timeout_seconds: 30
+    retry_attempts: 3
+  psx:
+    enabled: true
+    base_url: "https://dps.psx.com.pk"
+    prices_path: "/historical"
+    timeout_seconds: 30
+    retry_attempts: 3
+  sbp:
+    enabled: true
+    base_url: "https://www.sbp.org.pk"
+    macro_path: "/api/indicators"
+    timeout_seconds: 30
+    retry_attempts: 3
+  news:
+    enabled: true
+    feed_url: "https://example.com/api/news"
+    timeout_seconds: 15
+    retry_attempts: 2
+
+health_check:
+  interval_minutes: 60
+
+schedules:
+  nav_import: "0 18 * * *"
+  stock_import: "*/15 9-15 * * 1-5"
+  macro_import: "0 8 * * *"
+  news_import: "*/10 * * * *"
+  portfolio_snapshot: "0 19 * * *"
+  recommendation_cycle: "0 20 * * *"
+  learning_evaluation: "0 21 * * *"
+  daily_report: "0 22 * * *"

@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+credentials.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Logs and runtime data
+logs/**/*.log
+!logs/.gitkeep
+
+# Local database
+*.db
+*.sqlite3
+
+# Data (keep structure, ignore contents)
+data/raw/**
+data/processed/**
+data/cache/**
+data/exports/**
+data/imports/**
+data/datasets/**
+data/backtests/**
+!data/**/.gitkeep
+
+# Models (trained artifacts)
+models/**/*
+!models/**/.gitkeep
+
+# Reports (generated)
+reports/**/*
+!reports/.gitkeep
+
+# Backups
+backups/**/*
+!backups/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dashboard frontend
+dashboard/node_modules/
+dashboard/dist/

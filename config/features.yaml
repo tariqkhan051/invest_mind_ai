@@ -1,0 +1,16 @@
+# Feature flags — see docs/07_AI_ARCHITECTURE.md
+
+features:
+  mutual_fund_engine: true
+  stock_engine: true
+  market_intelligence: true
+  ai_recommendations: true
+  learning_engine: true
+  dashboard: true
+  reports: true
+  notifications: true
+  shariah_filter: true
+
+ai:
+  confidence_threshold: 0.6
+  max_recommendations_per_day: 3

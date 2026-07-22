@@ -1,0 +1,233 @@
+:root {
+  color: #0f172a;
+  background: #f8fafc;
+  font-family: Inter, Segoe UI, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 1.5rem;
+}
+
+.brand {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.brand p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #0f766e;
+  font-weight: 700;
+}
+
+.nav-link {
+  display: block;
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  margin-bottom: 0.35rem;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  background: rgba(15, 118, 110, 0.25);
+  color: #ffffff;
+}
+
+.content {
+  padding: 1.5rem 2rem 2rem;
+}
+
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-header,
+.stat-grid,
+.chart-grid,
+.split-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.page-header {
+  grid-template-columns: 1fr auto;
+  align-items: start;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.page-header h1,
+.chart-card h3 {
+  margin: 0.25rem 0;
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  color: #475569;
+}
+
+.market-score {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  text-align: right;
+}
+
+.market-score span {
+  display: block;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.market-score strong {
+  font-size: 2rem;
+  color: #0f766e;
+}
+
+.stat-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stat-card,
+.chart-card,
+.recommendation-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+}
+
+.stat-label,
+.stat-hint {
+  margin: 0;
+  color: #64748b;
+}
+
+.stat-value {
+  margin: 0.35rem 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.chart-grid,
+.split-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.recommendation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.recommendation-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.pill {
+  background: #ecfeff;
+  color: #0f766e;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.confidence {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.activity-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.activity-list p {
+  margin: 0.2rem 0 0;
+  color: #64748b;
+}
+
+.activity-list span {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.page-state,
+.empty-state {
+  color: #64748b;
+}
+
+.page-state.error {
+  color: #b91c1c;
+}
+
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .stat-grid,
+  .chart-grid,
+  .split-grid,
+  .page-header {
+    grid-template-columns: 1fr;
+  }
+}

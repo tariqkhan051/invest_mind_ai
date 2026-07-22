@@ -1,0 +1,20 @@
+# Production environment configuration
+
+environment: production
+debug: false
+
+database:
+  echo: false
+  pool_size: 10
+
+api:
+  cors_origins: []
+
+scheduler:
+  enabled: true
+  timezone: "Asia/Karachi"
+
+logging:
+  level: INFO
+  rotation: "50 MB"
+  retention: "30 days"

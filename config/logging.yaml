@@ -1,0 +1,19 @@
+# Logging configuration — see docs/23_AI_DEVELOPMENT_GUIDE.md §15
+
+format: "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name}:{function}:{line} | {message}"
+
+levels:
+  application: INFO
+  scheduler: INFO
+  ai: INFO
+  imports: INFO
+  notifications: INFO
+  errors: ERROR
+
+sinks:
+  application: "logs/application/app.log"
+  scheduler: "logs/scheduler/scheduler.log"
+  ai: "logs/ai/ai.log"
+  imports: "logs/imports/imports.log"
+  notifications: "logs/notifications/notifications.log"
+  errors: "logs/errors/errors.log"

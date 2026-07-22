@@ -1,0 +1,15 @@
+"""Application-wide constants."""
+
+from decimal import Decimal
+
+APP_NAME = "InvestMind AI"
+API_VERSION = "v1"
+DEFAULT_CURRENCY = "PKR"
+DEFAULT_PAGE_SIZE = 25
+MAX_PAGE_SIZE = 100
+DEFAULT_MONTHLY_INVESTMENT = Decimal("50000")
+MAX_RECOMMENDATIONS = 3
+DATABASE_CONNECT_TIMEOUT_SECONDS = 5
+
+# MVP single-user default owner identifier
+DEFAULT_OWNER_ID = "00000000-0000-4000-8000-000000000001"

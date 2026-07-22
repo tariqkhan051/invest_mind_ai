@@ -1,0 +1,9 @@
+# Notification channel configuration — see docs/06_DATA_PIPELINES.md §63
+
+notifications:
+  console:
+    enabled: true
+  email:
+    enabled: false
+    smtp_host: ""
+    recipient: ""

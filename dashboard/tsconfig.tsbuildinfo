@@ -1,0 +1,1 @@
+{"root":["./src/main.tsx","./src/vite-env.d.ts","./src/api/client.ts","./src/components/activityfeed.tsx","./src/components/allocationchart.tsx","./src/components/growthchart.tsx","./src/components/layout.tsx","./src/components/recommendationcard.tsx","./src/components/statcard.tsx","./src/pages/dashboardpage.tsx","./src/types/dashboard.ts"],"version":"5.9.3"}
