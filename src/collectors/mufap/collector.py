@@ -177,7 +177,7 @@ class MufapCollector(BaseCollector):
         watchlist_only = not bool(
             self._provider_config.get("auto_create_assets", False)
         )
-        self._fund_meta: dict[str, dict[str, Any]] = {}
+        self._fund_meta = {}
         records: list[NavRecord] = []
         seen: set[tuple[str, date]] = set()
         for page in pages:

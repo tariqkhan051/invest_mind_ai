@@ -48,7 +48,7 @@ def parse_almeezan_fund_prices_html(html: str) -> list[dict[str, Any]]:
         cells = tr.find_all("td")
         if not cells:
             continue
-        classes = cells[0].get("class") or []
+        classes: list[str] = list(cells[0].get("class") or [])
         if "table-head" in classes:
             category = cells[0].get_text(" ", strip=True) or category
             continue
@@ -160,7 +160,7 @@ def _normalize_name(name: str) -> str:
 def _cell(cells: list[Any], index: int) -> str:
     if index >= len(cells):
         return ""
-    return cells[index].get_text(" ", strip=True)
+    return str(cells[index].get_text(" ", strip=True))
 
 
 def _parse_decimal(value: str) -> Decimal | None:
