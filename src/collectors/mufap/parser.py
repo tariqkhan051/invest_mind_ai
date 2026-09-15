@@ -40,7 +40,9 @@ def parse_mufap_nav_html(html: str) -> list[dict[str, Any]]:
             continue
         body_rows = table.find_all("tr")[1:]
         for row in body_rows:
-            cells = [cell.get_text(" ", strip=True) for cell in row.find_all(["td", "th"])]
+            cells = [
+                cell.get_text(" ", strip=True) for cell in row.find_all(["td", "th"])
+            ]
             if len(cells) <= max(header_map.values()):
                 continue
             fund_name = cells[header_map["fund"]]
@@ -49,9 +51,7 @@ def parse_mufap_nav_html(html: str) -> list[dict[str, Any]]:
                 continue
             category = cells[header_map["category"]] if "category" in header_map else ""
             amc = cells[header_map["amc"]] if "amc" in header_map else ""
-            validity = (
-                cells[header_map["validity"]] if "validity" in header_map else ""
-            )
+            validity = cells[header_map["validity"]] if "validity" in header_map else ""
             rows.append(
                 {
                     "name": fund_name,

@@ -58,8 +58,7 @@ class SqlAlchemyLearningRecordRepository(LearningRecordRepository):
             .limit(limit)
         )
         return [
-            LearningRecordMapper.to_entity(row)
-            for row in self._session.scalars(stmt)
+            LearningRecordMapper.to_entity(row) for row in self._session.scalars(stmt)
         ]
 
     def list_all(self, limit: int = 50, offset: int = 0) -> list[LearningRecord]:
@@ -70,8 +69,7 @@ class SqlAlchemyLearningRecordRepository(LearningRecordRepository):
             .limit(limit)
         )
         return [
-            LearningRecordMapper.to_entity(row)
-            for row in self._session.scalars(stmt)
+            LearningRecordMapper.to_entity(row) for row in self._session.scalars(stmt)
         ]
 
     def count_all(self) -> int:

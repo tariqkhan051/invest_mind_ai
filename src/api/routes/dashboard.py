@@ -38,8 +38,7 @@ def get_dashboard(
             portfolio_summary=map_portfolio_summary(dashboard.portfolio_summary),
             market_summary=map_market_summary(dashboard.market_summary),
             latest_recommendations=[
-                _map_recommendation(item)
-                for item in dashboard.latest_recommendations
+                _map_recommendation(item) for item in dashboard.latest_recommendations
             ],
             charts=DashboardChartsResponse(
                 allocation=[

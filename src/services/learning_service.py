@@ -100,9 +100,7 @@ class LearningService:
         """Return one learning record by id."""
         record = self._learning_repository.get_by_id(record_id)
         if record is None:
-            raise LearningRecordNotFoundError(
-                f"Learning record {record_id} not found."
-            )
+            raise LearningRecordNotFoundError(f"Learning record {record_id} not found.")
         return record
 
     def get_history(

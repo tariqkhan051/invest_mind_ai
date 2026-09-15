@@ -86,9 +86,7 @@ def _deploy_cash_candidates(context: DecisionContext) -> list[OpportunityCandida
     if amount <= 0:
         return []
 
-    as_of = (
-        target.latest_nav_date.isoformat() if target.latest_nav_date else "unknown"
-    )
+    as_of = target.latest_nav_date.isoformat() if target.latest_nav_date else "unknown"
     category = target.asset_type.replace("_", " ")
     action = "Park idle cash" if defensive else "Deploy idle cash"
     reason = (
@@ -136,7 +134,9 @@ def _switch_candidates(context: DecisionContext) -> list[OpportunityCandidate]:
         # Move a meaningful slice of the weaker holding, not the entire position.
         amount = (holding_value * Decimal("0.25")).quantize(Decimal("1"))
         if amount <= 0:
-            amount = min(context.monthly_investment, holding_value or context.monthly_investment)
+            amount = min(
+                context.monthly_investment, holding_value or context.monthly_investment
+            )
 
         reason = (
             f"Move PKR {amount:,.0f} from {opportunity.from_symbol} "
@@ -228,9 +228,7 @@ def _stock_buy_candidates(context: DecisionContext) -> list[OpportunityCandidate
         score = opportunity.confidence * Decimal("100")
         amount = context.monthly_investment
         latest_price = stock.latest_price if stock else None
-        reason = (
-            f"Buy PKR {amount:,.0f} of {opportunity.symbol}. {opportunity.reason}"
-        )
+        reason = f"Buy PKR {amount:,.0f} of {opportunity.symbol}. {opportunity.reason}"
         results.append(
             OpportunityCandidate(
                 recommendation_type=RecommendationType.BUY,

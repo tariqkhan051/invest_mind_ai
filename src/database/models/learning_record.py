@@ -35,9 +35,7 @@ class LearningRecordModel(Base, UUIDPrimaryKeyMixin):
         ForeignKey("portfolio_snapshot.id"),
     )
     strategy_id: Mapped[str | None] = mapped_column(String(50))
-    outcome: Mapped[str] = mapped_column(
-        String(50), nullable=False, default="pending"
-    )
+    outcome: Mapped[str] = mapped_column(String(50), nullable=False, default="pending")
     expected_return: Mapped[Decimal | None] = mapped_column(Numeric(8, 4))
     actual_return: Mapped[Decimal | None] = mapped_column(Numeric(8, 4))
     prediction_error: Mapped[Decimal | None] = mapped_column(Numeric(8, 4))

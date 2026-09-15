@@ -51,7 +51,11 @@ class SbpCollector(BaseCollector):
                 "https://api.worldbank.org/v2/country/PK/indicator/FP.CPI.TOTL.ZG"
                 "?format=json&per_page=20",
             )
-            payload: dict[str, Any] = {"source": "live", "homepage_html": "", "inflation": []}
+            payload: dict[str, Any] = {
+                "source": "live",
+                "homepage_html": "",
+                "inflation": [],
+            }
             try:
                 payload["homepage_html"] = self._http_client.get_text(homepage_url)
             except Exception as exc:  # noqa: BLE001
@@ -141,7 +145,9 @@ class SbpCollector(BaseCollector):
                     indicator_name=indicator_name,
                     release_date=release_date,
                     actual_value=actual_value,
-                    source=str(row.get("source") or default_source or self.provider_name),
+                    source=str(
+                        row.get("source") or default_source or self.provider_name
+                    ),
                     country=str(row.get("country", "PK")),
                     frequency=row.get("frequency"),
                     forecast_value=self._parse_decimal(row.get("forecast_value")),

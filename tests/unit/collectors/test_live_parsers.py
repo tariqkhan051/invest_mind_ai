@@ -5,10 +5,18 @@ from decimal import Decimal
 
 from src.collectors.almeezan.parser import (
     parse_alias_config as parse_almeezan_aliases,
+)
+from src.collectors.almeezan.parser import (
     parse_almeezan_fund_prices_html,
+)
+from src.collectors.almeezan.parser import (
     resolve_fund_symbol as resolve_almeezan_symbol,
 )
-from src.collectors.mufap.parser import parse_alias_config, parse_mufap_nav_html, resolve_fund_symbol
+from src.collectors.mufap.parser import (
+    parse_alias_config,
+    parse_mufap_nav_html,
+    resolve_fund_symbol,
+)
 from src.collectors.psx.parser import parse_psx_eod_series
 from src.collectors.sbp.parser import parse_sbp_homepage, parse_world_bank_inflation
 
@@ -55,14 +63,20 @@ ALMEEZAN_HTML = """
 </tr>
 </thead>
 <tbody>
-<tr><td colspan="6" class="table-head">Equity Funds</td><td colspan="16" class="table-head"></td></tr>
+<tr>
+  <td colspan="6" class="table-head">Equity Funds</td>
+  <td colspan="16" class="table-head"></td>
+</tr>
 <tr>
   <td>Meezan Islamic Fund</td><td>8 Aug 2003</td><td>14 Sep 2026</td>
   <td>156.0864</td><td>159.6763</td><td>0.0000</td>
   <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
   <td>-5.30</td><td>-8.50</td><td>-7.10</td><td>30</td><td>40</td><td>100</td>
 </tr>
-<tr><td colspan="6" class="table-head">Money Market Funds</td><td colspan="16" class="table-head"></td></tr>
+<tr>
+  <td colspan="6" class="table-head">Money Market Funds</td>
+  <td colspan="16" class="table-head"></td>
+</tr>
 <tr>
   <td>Meezan Cash Fund</td><td>15 Jun 2009</td><td>14 Sep 2026</td>
   <td>0.0000</td><td>0.0000</td><td>52.6734</td>

@@ -12,7 +12,11 @@ from src.collectors.base.http_client import CollectorHttpClient
 from src.collectors.base.local_source import load_local_payload, resolve_local_path
 from src.collectors.base.models import NavRecord, ProviderHealth
 from src.collectors.base.validator import validate_nav_record
-from src.collectors.mufap.parser import parse_alias_config, parse_mufap_nav_html, resolve_fund_symbol
+from src.collectors.mufap.parser import (
+    parse_alias_config,
+    parse_mufap_nav_html,
+    resolve_fund_symbol,
+)
 from src.config.settings import Settings
 from src.domain.enums import AssetType
 from src.repositories.interfaces.asset_repository import AssetRepository
@@ -139,9 +143,11 @@ class MufapCollector(BaseCollector):
                     else f"Local import missing: {path}"
                 ),
             )
-        url = self._live_urls()[0] if source == "live" else self._get_config_value(
-            "base_url"
-        ).rstrip("/")
+        url = (
+            self._live_urls()[0]
+            if source == "live"
+            else self._get_config_value("base_url").rstrip("/")
+        )
         healthy = self._http_client.health_check(url)
         return ProviderHealth(
             provider=self.provider_name,
@@ -168,7 +174,9 @@ class MufapCollector(BaseCollector):
         shariah_only = bool(
             self._provider_config.get("shariah_only", self._settings.shariah_mode)
         )
-        watchlist_only = not bool(self._provider_config.get("auto_create_assets", False))
+        watchlist_only = not bool(
+            self._provider_config.get("auto_create_assets", False)
+        )
         self._fund_meta: dict[str, dict[str, Any]] = {}
         records: list[NavRecord] = []
         seen: set[tuple[str, date]] = set()
@@ -178,7 +186,9 @@ class MufapCollector(BaseCollector):
             for row in parse_mufap_nav_html(page):
                 if shariah_only and not row.get("is_shariah"):
                     continue
-                symbol = resolve_fund_symbol(str(row.get("name", "")), aliases, known_names)
+                symbol = resolve_fund_symbol(
+                    str(row.get("name", "")), aliases, known_names
+                )
                 if symbol is None:
                     if watchlist_only:
                         continue
@@ -234,7 +244,9 @@ class MufapCollector(BaseCollector):
     def _slug_symbol(name: str) -> str:
         words = [
             word
-            for word in "".join(ch if ch.isalnum() else " " for ch in name.upper()).split()
+            for word in "".join(
+                ch if ch.isalnum() else " " for ch in name.upper()
+            ).split()
             if word not in {"THE", "FUND", "LIMITED", "LTD", "OF", "AND", "PLAN"}
         ]
         if not words:

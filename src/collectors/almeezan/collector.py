@@ -48,9 +48,7 @@ class AlMeezanCollector(BaseCollector):
         if source == "local":
             path = resolve_local_path(
                 self._settings.project_root,
-                self._get_config_value(
-                    "local_path", "data/imports/almeezan_nav.json"
-                ),
+                self._get_config_value("local_path", "data/imports/almeezan_nav.json"),
             )
             return load_local_payload(path)
         if source == "live":
@@ -113,9 +111,7 @@ class AlMeezanCollector(BaseCollector):
         if source == "local":
             path = resolve_local_path(
                 self._settings.project_root,
-                self._get_config_value(
-                    "local_path", "data/imports/almeezan_nav.json"
-                ),
+                self._get_config_value("local_path", "data/imports/almeezan_nav.json"),
             )
             healthy = path.exists()
             return ProviderHealth(
@@ -149,7 +145,9 @@ class AlMeezanCollector(BaseCollector):
             )
             for asset in self._asset_repository.find_by_type(asset_type)
         }
-        watchlist_only = not bool(self._provider_config.get("auto_create_assets", False))
+        watchlist_only = not bool(
+            self._provider_config.get("auto_create_assets", False)
+        )
         self._fund_meta = {}
         records: list[NavRecord] = []
         seen: set[tuple[str, date]] = set()
@@ -185,7 +183,9 @@ class AlMeezanCollector(BaseCollector):
             )
         return records
 
-    def _row_to_record(self, row: dict[str, Any], default_source: str) -> NavRecord | None:
+    def _row_to_record(
+        self, row: dict[str, Any], default_source: str
+    ) -> NavRecord | None:
         symbol = str(row.get("symbol", "")).strip().upper()
         nav_date = self._parse_date(row.get("date") or row.get("nav_date"))
         nav_value = self._parse_decimal(row.get("nav"))
@@ -241,7 +241,19 @@ class AlMeezanCollector(BaseCollector):
             for word in "".join(
                 ch if ch.isalnum() else " " for ch in name.upper()
             ).split()
-            if word not in {"THE", "FUND", "LIMITED", "LTD", "OF", "AND", "PLAN", "UNITS", "TYPE", "B"}
+            if word
+            not in {
+                "THE",
+                "FUND",
+                "LIMITED",
+                "LTD",
+                "OF",
+                "AND",
+                "PLAN",
+                "UNITS",
+                "TYPE",
+                "B",
+            }
         ]
         if not words:
             return ""

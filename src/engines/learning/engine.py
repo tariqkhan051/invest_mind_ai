@@ -163,9 +163,7 @@ class LearningEngine:
             average_prediction_error=(
                 sum(errors) / Decimal(len(errors)) if errors else None
             ),
-            average_reward=(
-                sum(rewards) / Decimal(len(rewards)) if rewards else None
-            ),
+            average_reward=(sum(rewards) / Decimal(len(rewards)) if rewards else None),
             average_learning_score=(
                 sum(scores) / Decimal(len(scores)) if scores else None
             ),

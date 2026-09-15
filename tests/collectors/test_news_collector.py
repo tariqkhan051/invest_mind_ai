@@ -1,6 +1,5 @@
 """Unit tests for news collector."""
 
-
 import httpx
 from sqlalchemy.orm import Session
 

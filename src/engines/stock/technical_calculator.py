@@ -15,11 +15,7 @@ def calculate_technicals(history: list[PriceHistoryPoint]) -> TechnicalIndicator
 
     sorted_history = sorted(history, key=lambda point: point.price_date)
     closes = [point.close_price for point in sorted_history]
-    volumes = [
-        point.volume
-        for point in sorted_history
-        if point.volume is not None
-    ]
+    volumes = [point.volume for point in sorted_history if point.volume is not None]
 
     return TechnicalIndicators(
         sma_20=_sma(closes, 20),

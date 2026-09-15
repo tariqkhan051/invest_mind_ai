@@ -145,9 +145,9 @@ class PsxCollector(BaseCollector):
                     else f"Local import missing: {path}"
                 ),
             )
-        base_url = self._get_config_value(
-            "base_url", "https://dps.psx.com.pk"
-        ).rstrip("/")
+        base_url = self._get_config_value("base_url", "https://dps.psx.com.pk").rstrip(
+            "/"
+        )
         healthy = self._http_client.health_check(base_url)
         return ProviderHealth(
             provider=self.provider_name,
@@ -182,7 +182,9 @@ class PsxCollector(BaseCollector):
         configured = self._provider_config.get("symbols", [])
         symbols: list[str] = []
         if isinstance(configured, list):
-            symbols.extend(str(item).strip().upper() for item in configured if str(item).strip())
+            symbols.extend(
+                str(item).strip().upper() for item in configured if str(item).strip()
+            )
         existing = [
             asset.symbol.upper()
             for asset in self._asset_repository.find_by_type(AssetType.STOCK)

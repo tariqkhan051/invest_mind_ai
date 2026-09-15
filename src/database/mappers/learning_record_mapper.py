@@ -25,9 +25,7 @@ class LearningRecordMapper:
             confidence_adjustment=model.confidence_adjustment,
             reward=model.reward,
             penalty=model.penalty,
-            feedback=(
-                FeedbackAction(model.feedback) if model.feedback else None
-            ),
+            feedback=(FeedbackAction(model.feedback) if model.feedback else None),
             evaluated_at=model.evaluated_at,
             created_at=model.created_at,
         )

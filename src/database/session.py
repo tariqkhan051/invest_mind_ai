@@ -96,8 +96,7 @@ def _ensure_sqlite_nav_columns(engine: Engine) -> None:
     )
     with engine.begin() as connection:
         existing = {
-            row[1]
-            for row in connection.execute(text("PRAGMA table_info(nav_history)"))
+            row[1] for row in connection.execute(text("PRAGMA table_info(nav_history)"))
         }
         if not existing:
             return

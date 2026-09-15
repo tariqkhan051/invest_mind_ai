@@ -118,7 +118,11 @@ class Settings(BaseSettings):
         for name, values in overlay.items():
             if not isinstance(values, dict):
                 continue
-            current = dict(providers.get(name, {})) if isinstance(providers.get(name), dict) else {}
+            current = (
+                dict(providers.get(name, {}))
+                if isinstance(providers.get(name), dict)
+                else {}
+            )
             current.update(values)
             providers[name] = current
 

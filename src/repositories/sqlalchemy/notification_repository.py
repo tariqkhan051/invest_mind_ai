@@ -45,8 +45,7 @@ class SqlAlchemyNotificationRepository(NotificationRepository):
             .limit(limit)
         )
         return [
-            NotificationMapper.to_entity(row)
-            for row in self._session.scalars(stmt)
+            NotificationMapper.to_entity(row) for row in self._session.scalars(stmt)
         ]
 
     def count(self) -> int:

@@ -61,12 +61,18 @@ class CollectorService:
             result.status in {CollectorStatus.FAILED, CollectorStatus.DEGRADED}
             for result in results
         )
-        status = CollectorStatus.FAILED if failed else (
-            CollectorStatus.DEGRADED if degraded else CollectorStatus.SUCCESS
+        status = (
+            CollectorStatus.FAILED
+            if failed
+            else (CollectorStatus.DEGRADED if degraded else CollectorStatus.SUCCESS)
         )
         started = min(result.started_at for result in results)
         finished = max(
-            (result.finished_at for result in results if result.finished_at is not None),
+            (
+                result.finished_at
+                for result in results
+                if result.finished_at is not None
+            ),
             default=datetime.now(UTC),
         )
         return CollectorRunResult(

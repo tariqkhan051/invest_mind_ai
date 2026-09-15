@@ -37,9 +37,7 @@ class RecommendationMapper:
             supporting_evidence=model.supporting_evidence or {},
             status=RecommendationStatus(model.status),
             feedback_action=(
-                FeedbackAction(model.feedback_action)
-                if model.feedback_action
-                else None
+                FeedbackAction(model.feedback_action) if model.feedback_action else None
             ),
             feedback_notes=model.feedback_notes,
             generated_at=model.generated_at,

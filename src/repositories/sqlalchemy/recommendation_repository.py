@@ -50,8 +50,7 @@ class SqlAlchemyRecommendationRepository(RecommendationRepository):
             .limit(limit)
         )
         return [
-            RecommendationMapper.to_entity(row)
-            for row in self._session.scalars(stmt)
+            RecommendationMapper.to_entity(row) for row in self._session.scalars(stmt)
         ]
 
     def get_latest_batch(self, portfolio_id: UUID) -> list[Recommendation]:
@@ -71,12 +70,13 @@ class SqlAlchemyRecommendationRepository(RecommendationRepository):
             .order_by(RecommendationModel.priority.desc())
         )
         return [
-            RecommendationMapper.to_entity(row)
-            for row in self._session.scalars(stmt)
+            RecommendationMapper.to_entity(row) for row in self._session.scalars(stmt)
         ]
 
     def count_by_portfolio(self, portfolio_id: UUID) -> int:
-        stmt = select(func.count()).select_from(RecommendationModel).where(
-            RecommendationModel.portfolio_id == portfolio_id
+        stmt = (
+            select(func.count())
+            .select_from(RecommendationModel)
+            .where(RecommendationModel.portfolio_id == portfolio_id)
         )
         return int(self._session.scalar(stmt) or 0)

@@ -44,8 +44,7 @@ class SqlAlchemySchedulerJobRunRepository(SchedulerJobRunRepository):
             stmt = stmt.where(SchedulerJobRunModel.job_id == job_id)
         stmt = stmt.offset(offset).limit(limit)
         return [
-            SchedulerJobRunMapper.to_entity(row)
-            for row in self._session.scalars(stmt)
+            SchedulerJobRunMapper.to_entity(row) for row in self._session.scalars(stmt)
         ]
 
     def count(self, job_id: str | None = None) -> int:
