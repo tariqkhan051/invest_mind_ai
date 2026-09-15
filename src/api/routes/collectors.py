@@ -47,7 +47,7 @@ def _map_status(snapshot: CollectorStatusSnapshot) -> CollectorStatusResponse:
 def trigger_nav_import(
     service: Annotated[CollectorService, Depends(get_collector_service)],
 ) -> ApiResponse[CollectorRunResponse]:
-    """Trigger the MUFAP NAV collector manually."""
+    """Trigger MUFAP + Al Meezan NAV collectors manually."""
     result = service.run_nav_import()
     return ApiResponse(
         message="NAV import completed",

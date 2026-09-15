@@ -89,6 +89,7 @@ class Settings(BaseSettings):
         self.features_config = _load_named_yaml("features.yaml")
         self.risk_config = _load_named_yaml("risk.yaml")
         self.providers_config = _load_named_yaml("providers.yaml")
+        self._apply_environment_provider_overlay()
         self.notifications_config = _load_named_yaml("notifications.yaml")
         self.logging_config = _load_named_yaml("logging.yaml")
 
@@ -105,6 +106,21 @@ class Settings(BaseSettings):
         logging_config = self.yaml_config.get("logging", {})
         if logging_config.get("level") and "LOG_LEVEL" not in self.model_fields_set:
             self.log_level = str(logging_config["level"])
+
+    def _apply_environment_provider_overlay(self) -> None:
+        """Allow environment YAML to override provider source/settings."""
+        overlay = self.yaml_config.get("providers")
+        if not isinstance(overlay, dict):
+            return
+        providers = self.providers_config.setdefault("providers", {})
+        if not isinstance(providers, dict):
+            return
+        for name, values in overlay.items():
+            if not isinstance(values, dict):
+                continue
+            current = dict(providers.get(name, {})) if isinstance(providers.get(name), dict) else {}
+            current.update(values)
+            providers[name] = current
 
     @property
     def is_testing(self) -> bool:

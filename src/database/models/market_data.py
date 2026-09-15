@@ -41,6 +41,11 @@ class NavHistoryModel(Base, UUIDPrimaryKeyMixin):
     adjusted_nav: Mapped[Decimal | None] = mapped_column(Numeric(19, 6))
     daily_return: Mapped[Decimal | None] = mapped_column(Numeric(10, 6))
     dividend: Mapped[Decimal | None] = mapped_column(Numeric(19, 6))
+    offer_price: Mapped[Decimal | None] = mapped_column(Numeric(19, 6))
+    repurchase_price: Mapped[Decimal | None] = mapped_column(Numeric(19, 6))
+    fytd_return: Mapped[Decimal | None] = mapped_column(Numeric(10, 6))
+    mtd_return: Mapped[Decimal | None] = mapped_column(Numeric(10, 6))
+    category: Mapped[str | None] = mapped_column(String(120))
     source: Mapped[str | None] = mapped_column(String(100))
     quality_score: Mapped[Decimal | None] = mapped_column(Numeric(5, 2))
     created_at: Mapped[datetime] = mapped_column(

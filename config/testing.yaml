@@ -18,3 +18,18 @@ logging:
   level: WARNING
   rotation: "1 MB"
   retention: "1 day"
+
+# Keep collector unit tests on mock JSON endpoints, not live websites.
+providers:
+  mufap:
+    source: http
+    nav_path: "/api/nav/daily"
+  almeezan:
+    source: http
+    nav_path: "/api/nav/daily"
+  psx:
+    source: http
+    prices_path: "/historical"
+  sbp:
+    source: http
+    macro_path: "/api/indicators"

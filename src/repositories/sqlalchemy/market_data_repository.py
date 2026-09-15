@@ -27,8 +27,35 @@ class SqlAlchemyMarketDataRepository(MarketDataRepository):
         self._session = session
 
     def save_nav(self, record: NavRecord, asset_id: UUID) -> bool:
-        if self.nav_exists(asset_id, record.nav_date):
-            return False
+        existing = self._session.scalars(
+            select(NavHistoryModel).where(
+                NavHistoryModel.asset_id == asset_id,
+                NavHistoryModel.nav_date == record.nav_date,
+            )
+        ).first()
+        if existing is not None:
+            updated = False
+            for field_name, value in (
+                ("nav", record.nav),
+                ("adjusted_nav", record.adjusted_nav),
+                ("daily_return", record.daily_return),
+                ("dividend", record.dividend),
+                ("offer_price", record.offer_price),
+                ("repurchase_price", record.repurchase_price),
+                ("fytd_return", record.fytd_return),
+                ("mtd_return", record.mtd_return),
+                ("category", record.category),
+                ("source", record.source),
+            ):
+                if value is None:
+                    continue
+                if getattr(existing, field_name) != value:
+                    setattr(existing, field_name, value)
+                    updated = True
+            if updated:
+                self._session.flush()
+            return updated
+
         model = NavHistoryModel(
             asset_id=asset_id,
             nav_date=record.nav_date,
@@ -36,6 +63,11 @@ class SqlAlchemyMarketDataRepository(MarketDataRepository):
             adjusted_nav=record.adjusted_nav,
             daily_return=record.daily_return,
             dividend=record.dividend,
+            offer_price=record.offer_price,
+            repurchase_price=record.repurchase_price,
+            fytd_return=record.fytd_return,
+            mtd_return=record.mtd_return,
+            category=record.category,
             source=record.source,
             created_at=datetime.now(UTC),
         )
@@ -133,6 +165,12 @@ class SqlAlchemyMarketDataRepository(MarketDataRepository):
                 nav_date=row.nav_date,
                 nav=row.nav,
                 daily_return=row.daily_return,
+                offer_price=row.offer_price,
+                repurchase_price=row.repurchase_price,
+                fytd_return=row.fytd_return,
+                mtd_return=row.mtd_return,
+                category=row.category,
+                source=row.source,
             )
             for row in self._session.scalars(stmt)
         ]
@@ -151,6 +189,12 @@ class SqlAlchemyMarketDataRepository(MarketDataRepository):
             nav_date=row.nav_date,
             nav=row.nav,
             daily_return=row.daily_return,
+            offer_price=row.offer_price,
+            repurchase_price=row.repurchase_price,
+            fytd_return=row.fytd_return,
+            mtd_return=row.mtd_return,
+            category=row.category,
+            source=row.source,
         )
 
     def get_price_history(

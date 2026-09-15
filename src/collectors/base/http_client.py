@@ -9,6 +9,24 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 
 from src.core.exceptions import DataProviderUnavailable
 
+BROWSER_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/131.0.0.0 Safari/537.36"
+    ),
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,"
+        "image/avif,image/webp,*/*;q=0.8"
+    ),
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://www.mufap.com.pk/",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "same-origin",
+    "Upgrade-Insecure-Requests": "1",
+}
+
 
 class CollectorHttpClient:
     """HTTPX wrapper with timeout and retry support."""
@@ -18,10 +36,16 @@ class CollectorHttpClient:
         timeout_seconds: int = 30,
         retry_attempts: int = 3,
         client: httpx.Client | None = None,
+        headers: dict[str, str] | None = None,
     ) -> None:
         self._timeout_seconds = timeout_seconds
         self._retry_attempts = retry_attempts
-        self._client = client or httpx.Client(timeout=timeout_seconds)
+        request_headers = {**BROWSER_HEADERS, **(headers or {})}
+        self._client = client or httpx.Client(
+            timeout=timeout_seconds,
+            headers=request_headers,
+            follow_redirects=True,
+        )
         self._owns_client = client is None
 
     def close(self) -> None:

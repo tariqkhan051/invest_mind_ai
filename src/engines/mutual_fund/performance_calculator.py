@@ -16,19 +16,28 @@ def calculate_performance(
     as_of: date | None = None,
 ) -> FundPerformanceMetrics:
     """Calculate fund performance metrics from NAV history."""
-    if len(history) < 2:
+    if not history:
         return FundPerformanceMetrics()
 
     sorted_history = sorted(history, key=lambda point: point.nav_date)
     as_of = as_of or sorted_history[-1].nav_date
-    latest_nav = sorted_history[-1].nav
+    latest = sorted_history[-1]
+    latest_nav = latest.nav
 
+    if len(sorted_history) < 2:
+        return FundPerformanceMetrics(
+            monthly_return=latest.mtd_return,
+            yearly_return=latest.fytd_return,
+        )
+
+    yearly = _period_return(sorted_history, as_of, days=365)
+    monthly = _period_return(sorted_history, as_of, days=30)
     return FundPerformanceMetrics(
         daily_return=_period_return(sorted_history, as_of, days=1),
         weekly_return=_period_return(sorted_history, as_of, days=7),
-        monthly_return=_period_return(sorted_history, as_of, days=30),
+        monthly_return=monthly if monthly is not None else latest.mtd_return,
         quarterly_return=_period_return(sorted_history, as_of, days=90),
-        yearly_return=_period_return(sorted_history, as_of, days=365),
+        yearly_return=yearly if yearly is not None else latest.fytd_return,
         cagr_3y=_cagr(sorted_history, as_of, years=3),
         cagr_5y=_cagr(sorted_history, as_of, years=5),
         since_inception_return=_total_return(sorted_history[0].nav, latest_nav),

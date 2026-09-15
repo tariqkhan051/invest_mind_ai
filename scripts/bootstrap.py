@@ -1,13 +1,12 @@
-"""Bootstrap InvestMind AI for local analysis.
+"""Bootstrap InvestMind AI with live market data.
 
 Step-by-step local setup:
 1. Ensure .env exists
 2. Create database schema
 3. Seed Shariah funds and PSX stocks
-4. Generate local market-data imports
-5. Run collectors (NAV, prices, macro, news)
-6. Seed a sample portfolio (cash + holdings)
-7. Generate first recommendations
+4. Collect live MUFAP NAV, PSX prices, SBP/World Bank macro, news
+5. Seed a sample portfolio (cash + holdings)
+6. Generate first recommendations from live data
 
 Usage:
     python -m scripts.bootstrap
@@ -26,7 +25,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from scripts.generate_sample_market_data import write_sample_imports
 from src.config.settings import Settings, get_settings
 from src.core.logging import setup_logging
 from src.database.session import get_session_factory, init_database
@@ -67,10 +65,37 @@ FUNDS = [
     CreateMutualFundCommand(
         symbol="AMMF",
         display_name="Al Meezan Mutual Fund",
+        asset_type=AssetType.EQUITY_FUND,
+        management_company="Al Meezan",
+        expense_ratio=Decimal("1.80"),
+        aum=Decimal("25000000000"),
+        provider="seed",
+    ),
+    CreateMutualFundCommand(
+        symbol="MCF",
+        display_name="Meezan Cash Fund",
         asset_type=AssetType.MONEY_MARKET_FUND,
         management_company="Al Meezan",
-        expense_ratio=Decimal("1.20"),
+        expense_ratio=Decimal("0.80"),
         aum=Decimal("80000000000"),
+        provider="seed",
+    ),
+    CreateMutualFundCommand(
+        symbol="KMIF",
+        display_name="KSE Meezan Index Fund",
+        asset_type=AssetType.EQUITY_FUND,
+        management_company="Al Meezan",
+        expense_ratio=Decimal("1.00"),
+        aum=Decimal("15000000000"),
+        provider="seed",
+    ),
+    CreateMutualFundCommand(
+        symbol="MBF",
+        display_name="Meezan Balanced Fund",
+        asset_type=AssetType.BALANCED_FUND,
+        management_company="Al Meezan",
+        expense_ratio=Decimal("1.50"),
+        aum=Decimal("8000000000"),
         provider="seed",
     ),
 ]
@@ -101,6 +126,69 @@ STOCKS = [
         industry="Banking",
         market_cap=Decimal("280000000000"),
         pe=Decimal("6.8"),
+        provider="seed",
+    ),
+    CreateStockCommand(
+        symbol="OGDC",
+        display_name="Oil & Gas Development",
+        company_name="Oil and Gas Development Company Limited",
+        industry="Oil & Gas",
+        market_cap=Decimal("900000000000"),
+        pe=Decimal("5.5"),
+        provider="seed",
+    ),
+    CreateStockCommand(
+        symbol="PPL",
+        display_name="Pakistan Petroleum",
+        company_name="Pakistan Petroleum Limited",
+        industry="Oil & Gas",
+        market_cap=Decimal("450000000000"),
+        pe=Decimal("6.0"),
+        provider="seed",
+    ),
+    CreateStockCommand(
+        symbol="HUBC",
+        display_name="Hub Power",
+        company_name="The Hub Power Company Limited",
+        industry="Power",
+        market_cap=Decimal("200000000000"),
+        pe=Decimal("5.8"),
+        provider="seed",
+    ),
+    CreateStockCommand(
+        symbol="SYS",
+        display_name="Systems Limited",
+        company_name="Systems Limited",
+        industry="Technology",
+        market_cap=Decimal("180000000000"),
+        pe=Decimal("18.0"),
+        provider="seed",
+    ),
+    CreateStockCommand(
+        symbol="LUCK",
+        display_name="Lucky Cement",
+        company_name="Lucky Cement Limited",
+        industry="Cement",
+        market_cap=Decimal("350000000000"),
+        pe=Decimal("9.0"),
+        provider="seed",
+    ),
+    CreateStockCommand(
+        symbol="FFC",
+        display_name="Fauji Fertilizer",
+        company_name="Fauji Fertilizer Company Limited",
+        industry="Fertilizer",
+        market_cap=Decimal("300000000000"),
+        pe=Decimal("7.5"),
+        provider="seed",
+    ),
+    CreateStockCommand(
+        symbol="UBL",
+        display_name="United Bank",
+        company_name="United Bank Limited",
+        industry="Banking",
+        market_cap=Decimal("400000000000"),
+        pe=Decimal("5.2"),
         provider="seed",
     ),
 ]
@@ -140,6 +228,12 @@ def _seed_assets(asset_service: AssetService) -> dict[str, str]:
             created[fund.asset.symbol] = str(fund.asset_id)
             print(f"[ok] Seeded fund {fund.asset.symbol}")
         else:
+            if existing.asset_type != command.asset_type:
+                existing.asset_type = command.asset_type
+                asset_service._asset_repository.save(existing)  # noqa: SLF001
+                print(
+                    f"[ok] Updated fund type {existing.symbol} -> {command.asset_type.value}"
+                )
             created[existing.symbol] = str(existing.id)
             print(f"[skip] Fund already exists: {existing.symbol}")
     for command in STOCKS:
@@ -233,14 +327,11 @@ def bootstrap(*, reset_portfolio: bool = False, skip_news: bool = False) -> None
         asset_ids = _seed_assets(asset_service)
         session.commit()
 
-        imports = write_sample_imports(project_root / "data" / "imports")
-        print(f"[ok] Wrote sample imports: {', '.join(path.name for path in imports.values())}")
-
-        # Reload settings so provider config is current
         get_settings.cache_clear()
         settings = Settings()
         settings.database_echo = False
         collectors = CollectorService(settings, session)
+        live_failed = False
         for label, runner in (
             ("NAV", collectors.run_nav_import),
             ("stocks", collectors.run_stock_import),
@@ -248,11 +339,19 @@ def bootstrap(*, reset_portfolio: bool = False, skip_news: bool = False) -> None
         ):
             result = runner()
             print(
-                f"[ok] {label} import: status={result.status.value} "
+                f"[{'ok' if result.status.value != 'failed' else 'warn'}] "
+                f"{label} import: status={result.status.value} "
                 f"saved={result.rows_saved} rejected={result.rows_rejected}"
             )
             if result.errors:
                 print(f"     errors={result.errors}")
+            if result.status.value == "failed" or result.rows_saved == 0:
+                live_failed = True
+        if live_failed:
+            print(
+                "[warn] One or more live imports saved 0 rows. "
+                "Advice needs live NAV/prices/macro. Re-run after checking network."
+            )
 
         if skip_news:
             print("[skip] News import")
@@ -290,7 +389,7 @@ def bootstrap(*, reset_portfolio: bool = False, skip_news: bool = False) -> None
 
     print()
     print("Bootstrap complete. Next steps:")
-    print("  1. Start API:     python -m src.main")
+    print("  1. Start API:     uv run python -m src.main")
     print("  2. Open docs:     http://localhost:8000/docs")
     print("  3. Start UI:      cd dashboard && npm install && npm run dev")
     print("  4. Dashboard:     http://localhost:5173")

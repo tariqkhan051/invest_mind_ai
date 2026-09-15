@@ -119,10 +119,24 @@ class SqlAlchemyPortfolioRepository(PortfolioRepository):
         ]
 
     def save_snapshot(self, snapshot: PortfolioSnapshot) -> PortfolioSnapshot:
-        model = PortfolioSnapshotMapper.to_model(snapshot)
-        self._session.add(model)
+        existing = self._session.scalars(
+            select(PortfolioSnapshotModel).where(
+                PortfolioSnapshotModel.portfolio_id == snapshot.portfolio_id,
+                PortfolioSnapshotModel.snapshot_date == snapshot.snapshot_date,
+            )
+        ).first()
+        incoming = PortfolioSnapshotMapper.to_model(snapshot)
+        if existing is None:
+            self._session.add(incoming)
+            self._session.flush()
+            return PortfolioSnapshotMapper.to_entity(incoming)
+
+        for column in PortfolioSnapshotModel.__table__.columns:
+            if column.name in {"id", "created_at"}:
+                continue
+            setattr(existing, column.name, getattr(incoming, column.name))
         self._session.flush()
-        return PortfolioSnapshotMapper.to_entity(model)
+        return PortfolioSnapshotMapper.to_entity(existing)
 
     def get_goals(self, portfolio_id: UUID) -> list[InvestmentGoal]:
         stmt = select(InvestmentGoalModel).where(

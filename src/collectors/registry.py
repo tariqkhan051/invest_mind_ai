@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Session
 
+from src.collectors.almeezan.collector import AlMeezanCollector
 from src.collectors.base.collector import BaseCollector
 from src.collectors.base.http_client import CollectorHttpClient
 from src.collectors.mufap.collector import MufapCollector
@@ -29,6 +30,12 @@ def build_collectors(
     news_repository = SqlAlchemyNewsRepository(session)
     return {
         "mufap": MufapCollector(
+            settings,
+            asset_repository,
+            market_data_repository,
+            http_client=http_client,
+        ),
+        "almeezan": AlMeezanCollector(
             settings,
             asset_repository,
             market_data_repository,

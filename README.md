@@ -495,11 +495,11 @@ Current Phase
 
 ✅ Milestone 1–12 — MVP modules implemented
 
-✅ Local bootstrap — seed assets, sample market data, sample portfolio
+✅ Local bootstrap — seed assets, sample portfolio
+
+✅ Live MUFAP / Al Meezan / PSX / SBP / news collectors
 
 Next Phase
-
-⏳ Wire live MUFAP / PSX / SBP HTTP providers (optional; local imports work now)
 
 ⏳ Milestone 13 — Production Deployment
 
@@ -510,17 +510,16 @@ Next Phase
 Run these steps once from the repo root:
 
 ```bash
-# 1) Install runtime + optional Postgres driver
+# 1) Install into the project venv (required — system Python lacks deps like bs4)
 uv sync
-# or: pip install -e ".[dev]"
 
-# 2) Bootstrap DB, assets, sample market data, portfolio, recommendations
-python -m scripts.bootstrap
-# optional: python -m scripts.bootstrap --skip-news
-# optional: python -m scripts.bootstrap --reset-portfolio
+# 2) Bootstrap DB, seed assets, pull LIVE market data, generate advice
+uv run python -m scripts.bootstrap
+# optional: uv run python -m scripts.bootstrap --skip-news
+# optional: uv run python -m scripts.bootstrap --reset-portfolio
 
 # 3) Start API
-python -m src.main
+uv run python -m src.main
 
 # 4) Start dashboard (second terminal)
 cd dashboard
@@ -540,13 +539,19 @@ Useful endpoints after bootstrap:
 - `GET /api/v1/stocks` — stock analysis
 - `GET /api/v1/recommendations` — AI recommendations
 - `POST /api/v1/assets/funds` / `POST /api/v1/assets/stocks` — register more assets
-- `POST /api/v1/collectors/nav` — re-import local NAV file
+- `POST /api/v1/collectors/nav` — re-import live MUFAP + Al Meezan fund prices
 
-Local market data lives in `data/imports/` (`source: local` in `config/providers.yaml`).
+Live sources (see `config/providers.yaml`):
+
+- MUFAP daily NAV HTML
+- Al Meezan fund prices (offer / repurchase / NAV, typically prior day)
+- PSX Data Portal EOD timeseries (expanded watchlist)
+- SBP homepage (policy rate, USD/PKR) + World Bank CPI
+- Dawn / BBC Business RSS
+
+Set `source: local` only if you need offline sample files.
 
 Future
-
-⏳ Live provider HTTP adapters
 
 ⏳ WhatsApp Integration
 

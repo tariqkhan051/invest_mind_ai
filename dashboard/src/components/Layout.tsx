@@ -1,20 +1,15 @@
 import type { ReactNode } from "react";
 
+import type { AppPage, NavItem } from "../navigation";
+import { NAV_ITEMS } from "../navigation";
+
 interface LayoutProps {
+  activePage: AppPage;
+  onNavigate: (page: AppPage) => void;
   children: ReactNode;
 }
 
-const NAV_ITEMS = [
-  "Dashboard",
-  "Portfolio",
-  "Funds",
-  "Stocks",
-  "Recommendations",
-  "Market",
-  "Reports",
-];
-
-export function Layout({ children }: LayoutProps) {
+export function Layout({ activePage, onNavigate, children }: LayoutProps) {
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -26,14 +21,15 @@ export function Layout({ children }: LayoutProps) {
           </div>
         </div>
         <nav>
-          {NAV_ITEMS.map((item, index) => (
-            <a
-              key={item}
-              href="#"
-              className={index === 0 ? "nav-link active" : "nav-link"}
+          {NAV_ITEMS.map((item: NavItem) => (
+            <button
+              key={item.id}
+              type="button"
+              className={item.id === activePage ? "nav-link active" : "nav-link"}
+              onClick={() => onNavigate(item.id)}
             >
-              {item}
-            </a>
+              {item.label}
+            </button>
           ))}
         </nav>
       </aside>

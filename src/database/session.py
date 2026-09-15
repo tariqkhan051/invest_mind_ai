@@ -80,3 +80,30 @@ def init_database(settings: Settings) -> None:
 
     engine = _create_engine(settings)
     Base.metadata.create_all(bind=engine)
+    _ensure_sqlite_nav_columns(engine)
+
+
+def _ensure_sqlite_nav_columns(engine: Engine) -> None:
+    """Add newer nav_history columns on existing SQLite databases."""
+    if engine.dialect.name != "sqlite":
+        return
+    alterations = (
+        ("offer_price", "NUMERIC(19, 6)"),
+        ("repurchase_price", "NUMERIC(19, 6)"),
+        ("fytd_return", "NUMERIC(10, 6)"),
+        ("mtd_return", "NUMERIC(10, 6)"),
+        ("category", "VARCHAR(120)"),
+    )
+    with engine.begin() as connection:
+        existing = {
+            row[1]
+            for row in connection.execute(text("PRAGMA table_info(nav_history)"))
+        }
+        if not existing:
+            return
+        for column_name, column_type in alterations:
+            if column_name in existing:
+                continue
+            connection.execute(
+                text(f"ALTER TABLE nav_history ADD COLUMN {column_name} {column_type}")
+            )

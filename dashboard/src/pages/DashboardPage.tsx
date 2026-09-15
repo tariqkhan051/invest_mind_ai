@@ -86,7 +86,10 @@ export function DashboardPage() {
 
       <section className="split-grid">
         <div className="chart-card">
-          <h3>Latest AI Recommendations</h3>
+          <h3>Today&apos;s Actions</h3>
+          <p className="section-hint">
+            What to do with cash and watchlist names based on live fund/stock data.
+          </p>
           {data.latest_recommendations.length === 0 ? (
             <p className="empty-state">No recommendations yet.</p>
           ) : (

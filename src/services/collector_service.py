@@ -50,8 +50,41 @@ class CollectorService:
         }
 
     def run_nav_import(self) -> CollectorRunResult:
-        """Run the MUFAP NAV collector."""
-        return self._run_collector("mufap")
+        """Run MUFAP then Al Meezan NAV collectors and return a combined result."""
+        results = [
+            self._run_collector("mufap"),
+            self._run_collector("almeezan"),
+        ]
+        errors = [error for result in results for error in result.errors]
+        failed = all(result.status == CollectorStatus.FAILED for result in results)
+        degraded = any(
+            result.status in {CollectorStatus.FAILED, CollectorStatus.DEGRADED}
+            for result in results
+        )
+        status = CollectorStatus.FAILED if failed else (
+            CollectorStatus.DEGRADED if degraded else CollectorStatus.SUCCESS
+        )
+        started = min(result.started_at for result in results)
+        finished = max(
+            (result.finished_at for result in results if result.finished_at is not None),
+            default=datetime.now(UTC),
+        )
+        return CollectorRunResult(
+            provider="nav",
+            status=status,
+            rows_collected=sum(result.rows_collected for result in results),
+            rows_saved=sum(result.rows_saved for result in results),
+            rows_rejected=sum(result.rows_rejected for result in results),
+            rows_duplicates=sum(result.rows_duplicates for result in results),
+            duration_ms=sum(result.duration_ms for result in results),
+            errors=errors,
+            started_at=started,
+            finished_at=finished,
+        )
+
+    def run_almeezan_import(self) -> CollectorRunResult:
+        """Run the Al Meezan fund-prices collector."""
+        return self._run_collector("almeezan")
 
     def run_stock_import(self) -> CollectorRunResult:
         """Run the PSX stock price collector."""

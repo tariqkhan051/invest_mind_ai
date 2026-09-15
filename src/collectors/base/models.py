@@ -30,6 +30,11 @@ class NavRecord:
     adjusted_nav: Decimal | None = None
     daily_return: Decimal | None = None
     dividend: Decimal | None = None
+    offer_price: Decimal | None = None
+    repurchase_price: Decimal | None = None
+    fytd_return: Decimal | None = None
+    mtd_return: Decimal | None = None
+    category: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
