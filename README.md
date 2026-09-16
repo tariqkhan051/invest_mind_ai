@@ -4,7 +4,8 @@
 
 ---
 
-# Vision
+<details>
+<summary><h2>Vision</h2></summary>
 
 The goal of this project is to build an intelligent investment assistant that acts like a professional financial advisor.
 
@@ -45,11 +46,15 @@ The AI never executes trades automatically.
 
 The investor always remains in control.
 
+</details>
+
 ---
 
-# Key Features
+<details>
+<summary><h2>Key Features</h2></summary>
 
-## Portfolio Management
+<details>
+<summary><h3>Portfolio Management</h3></summary>
 
 - Portfolio tracking
 - Holdings management
@@ -61,9 +66,10 @@ The investor always remains in control.
 - CAGR
 - Performance analytics
 
----
+</details>
 
-## Mutual Fund Intelligence
+<details>
+<summary><h3>Mutual Fund Intelligence</h3></summary>
 
 - Daily NAV imports
 - Historical NAV analysis
@@ -74,9 +80,10 @@ The investor always remains in control.
 - Risk metrics
 - Category analysis
 
----
+</details>
 
-## Stock Intelligence
+<details>
+<summary><h3>Stock Intelligence</h3></summary>
 
 - PSX price history
 - Technical indicators
@@ -86,9 +93,10 @@ The investor always remains in control.
 - Opportunity detection
 - Shariah compliance filtering
 
----
+</details>
 
-## Market Intelligence
+<details>
+<summary><h3>Market Intelligence</h3></summary>
 
 - Interest Rates
 - Inflation
@@ -99,9 +107,10 @@ The investor always remains in control.
 - Market Sentiment
 - Market Regime Detection
 
----
+</details>
 
-## AI Decision Engine
+<details>
+<summary><h3>AI Decision Engine</h3></summary>
 
 The AI combines:
 
@@ -130,18 +139,15 @@ Daily Investment Recommendations
 Examples
 
 - Invest PKR 50,000 into MIF
-
 - Switch PKR 250,000 from AMMF → MEF
-
 - Hold Cash
-
 - Buy MARI
-
 - No Action Today
 
----
+</details>
 
-## Learning Engine
+<details>
+<summary><h3>Learning Engine</h3></summary>
 
 The system continuously learns from
 
@@ -165,9 +171,14 @@ Model Improvement
 
 The objective is continuous improvement rather than static rule-based investing.
 
+</details>
+
+</details>
+
 ---
 
-# Technology Stack
+<details>
+<summary><h2>Technology Stack</h2></summary>
 
 | Layer | Technology |
 |---------|------------|
@@ -185,9 +196,12 @@ The objective is continuous improvement rather than static rule-based investing.
 | Formatting | Black |
 | Container | Docker |
 
+</details>
+
 ---
 
-# Project Structure
+<details>
+<summary><h2>Project Structure</h2></summary>
 
 ```
 personal-investor/
@@ -209,9 +223,12 @@ requirements.txt
 pyproject.toml
 ```
 
+</details>
+
 ---
 
-# Architecture
+<details>
+<summary><h2>Architecture</h2></summary>
 
 The project follows
 
@@ -259,9 +276,12 @@ Repositories → Database
      MUFAP • PSX • SBP • News
 ```
 
+</details>
+
 ---
 
-# AI Decision Flow
+<details>
+<summary><h2>AI Decision Flow</h2></summary>
 
 ```
 Collect Latest Data
@@ -307,37 +327,33 @@ Generate Explanation
 Store Learning
 ```
 
+</details>
+
 ---
 
-# Current MVP Scope
+<details>
+<summary><h2>Current MVP Scope</h2></summary>
 
 The MVP includes
 
 - Portfolio Management
-
 - Mutual Fund Engine
-
 - Stock Engine
-
 - Market Intelligence
-
 - AI Recommendation Engine
-
 - Learning Engine
-
 - Dashboard
-
 - Reports
-
 - REST APIs
-
 - Scheduler
-
 - Daily Recommendations
+
+</details>
 
 ---
 
-# Future Scope
+<details>
+<summary><h2>Future Scope</h2></summary>
 
 Future versions may include
 
@@ -355,9 +371,12 @@ Future versions may include
 - Reinforcement Learning
 - International Markets
 
+</details>
+
 ---
 
-# Development Workflow
+<details>
+<summary><h2>Development Workflow</h2></summary>
 
 ```
 Requirement
@@ -391,9 +410,12 @@ Code Review
 Deployment
 ```
 
+</details>
+
 ---
 
-# Coding Principles
+<details>
+<summary><h2>Coding Principles</h2></summary>
 
 - Clean Architecture
 - SOLID
@@ -404,9 +426,12 @@ Deployment
 - Immutable Historical Data
 - No Hardcoded Secrets
 
+</details>
+
 ---
 
-# AI Development
+<details>
+<summary><h2>AI Development</h2></summary>
 
 This repository is designed to be developed alongside AI coding assistants.
 
@@ -431,63 +456,47 @@ and the complete specifications in
 docs/
 ```
 
+</details>
+
 ---
 
-# Documentation
+<details>
+<summary><h2>Documentation</h2></summary>
 
 Project documentation
 
 ```
 01_PROJECT_VISION.md
-
 02_REQUIREMENTS.md
-
 03_ARCHITECTURE.md
-
 04_DOMAIN_MODEL.md
-
 05_DATABASE_DESIGN.md
-
 06_DATA_PIPELINES.md
-
 07_AI_ARCHITECTURE.md
-
 08_PROJECT_STRUCTURE.md
-
 09_CODING_STANDARDS.md
-
 10_TECH_STACK.md
-
 11_DATA_COLLECTION.md
-
 12_PORTFOLIO_ENGINE.md
-
 13_MUTUAL_FUND_ENGINE.md
-
 14_STOCK_ENGINE.md
-
 15_MARKET_INTELLIGENCE_ENGINE.md
-
 16_AI_DECISION_ENGINE.md
-
 17_DASHBOARD.md
-
 18_API.md
-
 19_SECURITY.md
-
 20_TESTING.md
-
 21_ROADMAP.md
-
 22_FUTURE_IDEAS.md
-
 23_AI_DEVELOPMENT_GUIDE.md
 ```
 
+</details>
+
 ---
 
-# Project Status
+<details open>
+<summary><h2>Project Status</h2></summary>
 
 Current Phase
 
@@ -503,9 +512,12 @@ Next Phase
 
 ⏳ Milestone 13 — Production Deployment
 
+</details>
+
 ---
 
-# Getting Started (local analysis)
+<details open>
+<summary><h2>Getting Started (local analysis)</h2></summary>
 
 Run these steps once from the repo root:
 
@@ -555,9 +567,12 @@ Future
 
 ⏳ WhatsApp Integration
 
+</details>
+
 ---
 
-# Guiding Principles
+<details>
+<summary><h2>Guiding Principles</h2></summary>
 
 This project exists to answer one question:
 
@@ -577,9 +592,12 @@ The AI advises.
 
 The investor decides.
 
+</details>
+
 ---
 
-# License
+<details>
+<summary><h2>License</h2></summary>
 
 This project is intended for educational and personal investment management purposes.
 
@@ -587,9 +605,12 @@ Nothing produced by this system constitutes financial advice.
 
 Users remain solely responsible for their investment decisions.
 
+</details>
+
 ---
 
-# Author
+<details>
+<summary><h2>Author</h2></summary>
 
 **Muhammad Tariq Khan**
 
@@ -599,4 +620,4 @@ AI-Enhanced Software Project Management Researcher
 
 FinTech | Artificial Intelligence | Investment Analytics
 
----
+</details>
