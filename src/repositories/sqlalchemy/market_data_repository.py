@@ -54,7 +54,8 @@ class SqlAlchemyMarketDataRepository(MarketDataRepository):
                     updated = True
             if updated:
                 self._session.flush()
-            return updated
+            # Existing dates count as duplicates even after refresh.
+            return False
 
         model = NavHistoryModel(
             asset_id=asset_id,

@@ -33,3 +33,6 @@ providers:
   sbp:
     source: http
     macro_path: "/api/indicators"
+  news:
+    feeds: []
+    feed_url: "https://example.com/news.json"

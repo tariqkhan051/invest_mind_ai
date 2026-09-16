@@ -121,7 +121,10 @@ def test_mufap_collector_skips_duplicates(
 
     market_repo.save_nav(
         NavRecord(
-            symbol="MIF", nav_date=date(2026, 1, 15), nav=Decimal("50"), source="test"
+            symbol="MIF",
+            nav_date=date(2026, 1, 15),
+            nav=Decimal("52.45"),
+            source="test",
         ),
         asset.id,
     )

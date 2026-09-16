@@ -34,7 +34,7 @@ logger = get_logger("api.app")
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Application startup and shutdown lifecycle."""
-    settings = get_settings()
+    settings: Settings = app.state.settings
     setup_logging(settings)
     logger.info(
         "application_starting name={} version={} environment={}",
@@ -69,6 +69,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         openapi_url="/openapi.json",
         lifespan=lifespan,
     )
+    app.state.settings = app_settings
 
     register_middleware(app, app_settings)
     register_exception_handlers(app)
